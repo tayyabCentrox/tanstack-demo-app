@@ -6,11 +6,18 @@ import viteTsConfigPaths from "vite-tsconfig-paths";
 import { fileURLToPath, URL } from "url";
 
 export default defineConfig({
-  base: "/tanstack-demo-app/",
+  base: "/",
 
   resolve: {
     alias: {
       "@": fileURLToPath(new URL("./src", import.meta.url)),
+      // Stub out Node.js modules for browser
+      "node:async_hooks": fileURLToPath(
+        new URL("./src/lib/stubs/async-hooks.ts", import.meta.url),
+      ),
+      "node:fs": fileURLToPath(
+        new URL("./src/lib/stubs/fs.ts", import.meta.url),
+      ),
     },
     conditions: ["browser"],
   },
@@ -18,10 +25,7 @@ export default defineConfig({
   plugins: [
     devtools(),
 
-    TanStackRouterVite({
-      // Exclude server-side routes from client build
-      exclude: ["**/**.server-funcs.**", "**/**.ssr.**"],
-    }),
+    TanStackRouterVite(),
 
     viteTsConfigPaths({
       projects: ["./tsconfig.json"],
@@ -32,8 +36,5 @@ export default defineConfig({
 
   build: {
     outDir: "dist",
-    rollupOptions: {
-      external: ["node:fs", "node:async_hooks"],
-    },
   },
 });
