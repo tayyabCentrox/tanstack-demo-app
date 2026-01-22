@@ -6,7 +6,7 @@ import viteTsConfigPaths from "vite-tsconfig-paths";
 import { fileURLToPath, URL } from "url";
 import { nitro } from "nitro/vite";
 
-const config = defineConfig({
+export default defineConfig({
   base: "/tanstack-demo-app/",
 
   resolve: {
@@ -14,17 +14,25 @@ const config = defineConfig({
       "@": fileURLToPath(new URL("./src", import.meta.url)),
     },
   },
+
   plugins: [
     devtools(),
-    nitro(),
-    // this is the plugin that enables path aliases
+
+    // This is what disables SSR for GitHub Pages
+    nitro({
+      preset: "static",
+    }),
+
     viteTsConfigPaths({
       projects: ["./tsconfig.json"],
     }),
 
     tanstackStart(),
+
     viteReact(),
   ],
-});
 
-export default config;
+  build: {
+    outDir: "dist",
+  },
+});
