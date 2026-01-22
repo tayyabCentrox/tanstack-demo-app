@@ -1,10 +1,9 @@
 import { defineConfig } from "vite";
 import { devtools } from "@tanstack/devtools-vite";
-import { tanstackStart } from "@tanstack/react-start/plugin/vite";
+import { TanStackRouterVite } from "@tanstack/router-plugin/vite";
 import viteReact from "@vitejs/plugin-react";
 import viteTsConfigPaths from "vite-tsconfig-paths";
 import { fileURLToPath, URL } from "url";
-import { nitro } from "nitro/vite";
 
 export default defineConfig({
   base: "/tanstack-demo-app/",
@@ -13,26 +12,28 @@ export default defineConfig({
     alias: {
       "@": fileURLToPath(new URL("./src", import.meta.url)),
     },
+    conditions: ["browser"],
   },
 
   plugins: [
     devtools(),
 
-    // This is what disables SSR for GitHub Pages
-    nitro({
-      preset: "static",
+    TanStackRouterVite({
+      // Exclude server-side routes from client build
+      exclude: ["**/**.server-funcs.**", "**/**.ssr.**"],
     }),
 
     viteTsConfigPaths({
       projects: ["./tsconfig.json"],
     }),
 
-    tanstackStart(),
-
     viteReact(),
   ],
 
   build: {
     outDir: "dist",
+    rollupOptions: {
+      external: ["node:fs", "node:async_hooks"],
+    },
   },
 });
