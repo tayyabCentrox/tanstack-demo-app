@@ -1,0 +1,1 @@
+import{r as s,g as r,j as n}from"./main-D5Japx6G.js";function u(){const[t,o]=s.useState([]);return s.useEffect(()=>{r().then(o)},[]),n.jsxs("div",{children:[n.jsx("h1",{children:"SPA Mode - Punk Songs"}),n.jsx("ul",{children:t.map(e=>n.jsxs("li",{children:[e.name," - ",e.artist]},e.id))})]})}export{u as component};

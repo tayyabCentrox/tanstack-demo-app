@@ -1,1 +1,0 @@
-import{i as s,j as n}from"./main-sh7plqeD.js";function i(){const e=s.useLoaderData();return n.jsxs("div",{children:[n.jsx("h1",{children:"Data Only SSR - Punk Songs"}),n.jsx("ul",{children:e.map(t=>n.jsxs("li",{children:[t.name," - ",t.artist]},t.id))})]})}export{i as component};
